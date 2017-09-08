@@ -64,7 +64,26 @@ echo -e "\n---- Install tool packages ----"
 sudo apt-get install wget subversion git bzr bzrtools python-pip gdebi-core -y
 
 echo -e "\n---- Check Python version ----"
-sudo python
+export PYTHON_VERSION=`python -c 'import sys; version=sys.version_info[:3]; print("{0}".format(*version))'`
+echo $PYTHON_VERSION
+if [ $PYTHON_VERSION == 2 ]; then
+    echo -e "python version is $PYTHON_VERSION"
+else
+    echo -e "python version is $PYTHON_VERSION"
+    sudo apt-get install build-essential checkinstall
+    sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+
+    version=2.7.13
+    wget https://www.python.org/ftp/python/$version/Python-$version.tgz
+
+    tar -xvf Python-$version.tgz
+    cd Python-$version
+
+    ./configure
+    make
+    sudo checkinstall
+    echo -e "\n---- Python 2 is installed completly ----"
+fi
 	
 echo -e "\n---- Install python packages ----"
 sudo apt-get install python-dateutil python-feedparser python-ldap python-libxslt1 python-lxml python-mako python-openid python-psycopg2 python-pybabel python-pychart python-pydot python-pyparsing python-reportlab python-simplejson python-tz python-vatnumber python-vobject python-webdav python-werkzeug python-xlwt python-yaml python-zsi python-docutils python-psutil python-mock python-unittest2 python-jinja2 python-pypdf python-decorator python-requests python-passlib python-pil -y
